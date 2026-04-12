@@ -28,6 +28,7 @@ import os
 # ─────────────────────────────────────────────────────────────────────────────
 
 def build_database(conn):
+    conn.execute("PRAGMA foreign_key= ON;")
     """Create the four-table music schema in the database referenced by conn.
 
     Requirements (all graded):
@@ -48,7 +49,7 @@ def build_database(conn):
     None
     """
     # Step 1 — enable foreign key enforcement  (DO NOT REMOVE THIS LINE)
-    conn.execute("PRAGMA foreign_keys = ON;")
+   conn.execute("PRAGMA foreign_keys = ON;")
 
     # Step 2 — Artist table
     conn.execute("""
@@ -130,9 +131,14 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen artists
 
     artists = [
-        # (artist_id, name, genre, origin_city),
-        (1, "TODO — Artist Name", "TODO — Genre", "TODO — City"),
-        # add at least 5 more rows ...
+        (1, "Taylor Swift", "Modern Pop", "Nashville"),
+        (2, "Ariana Grande", "Modern Pop", "Boca Raton"),
+        (3, "Olivia Rodrigo", "Modern Pop", "Murrieta"),
+        (4, "Lady Gaga", "Modern Pop", "New York City"),
+        (5, "Dua Lipa", "Modern Pop", "London"),
+        (6, "Billie Eilish", "Modern Pop", "Los Angeles")
+       
+       
     ]
 
     conn.executemany(
@@ -147,9 +153,32 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen tracks (minimum 18)
 
     tracks = [
-        # (track_id, title, duration_seconds, artist_id),
-        (1, "TODO — Track Title", 200, 1),
-        # add at least 17 more rows ...
+          (1, "Blank Space", 231, 1),
+          (2, "Love Story", 235, 1),
+          (3, "It's Nice To Have a Friend",150, 1),
+
+          (4, "7 Rings", 178, 2),
+          (5, "Thank U, Next", 207, 2),
+          (6, "Into you", 244, 2),
+
+          (7, "Drivers License", 242, 3),
+          (8, "Good 4 U", 178, 3),
+          (9, "Vampire", 219, 3),
+
+
+           (10, "Bad Romance", 295, 4),
+           (11, "Poker Face", 237, 4),
+           (12, "Shallow", 215, 4),
+
+
+           (13, "Levitating", 203, 5),
+           (14, "Don't Start Now", 183, 5),
+           (15, "New Rules", 209, 5),
+
+           (16, "Bad Guy", 194, 6),
+           (17, "When the Party's Over", 196, 6),
+           (18, "Happier Than Ever", 298, 6),
+       
     ]
 
     conn.executemany(
@@ -162,9 +191,10 @@ def seed_database(conn):
     # TODO: replace placeholder data with your team's chosen playlists (minimum 4)
 
     playlists = [
-        # (playlist_id, playlist_name, owner_name),
-        (1, "TODO — Playlist Name", "TODO — Owner"),
-        # add at least 3 more rows ...
+          (1, "Running Mix", "Alex"),
+          (2, "Chill music", "Lily"),
+          (3, "Fav songs", "Thomas" ),
+          (4, "Cleaning list", "Diana")
     ]
 
     conn.executemany(
@@ -182,8 +212,11 @@ def seed_database(conn):
 
     playlist_tracks = [
         # (playlist_id, track_id, position),
-        (1, 1, 1),
-        # add at least 19 more rows ...
+        (1, 1, 1), (1, 2, 2), (1, 5, 3), (1, 6, 4), (1, 3, 5),
+        (2, 4, 1), (2, 7, 2), (2, 8, 3), (2, 9, 4), (2, 10, 5),
+        (3, 11, 1), (3, 12, 2), (3, 13, 3), (3, 14, 4), (3, 15, 5),
+        (4, 16, 1), (4, 17, 2), (4, 18, 3), (4, 1, 4), (4, 2, 5) 
+        # a dd at least 19 more rows ...
     ]
 
     conn.executemany(
@@ -198,12 +231,14 @@ def seed_database(conn):
 # ─────────────────────────────────────────────────────────────────────────────
 # PART 3 — Standalone demonstration  (run:  python schema_data.py)
 # ─────────────────────────────────────────────────────────────────────────────
-
+Import sqlite3
+Import os
 if __name__ == "__main__":
 
     # 3a — Build and seed a RAM-only database
     conn = sqlite3.connect(":memory:")
     conn.execute("PRAGMA foreign_keys = ON;")
+
     build_database(conn)
     seed_database(conn)
 
@@ -226,14 +261,17 @@ if __name__ == "__main__":
     #
     # Your code here:
     print("\nIntegrityError demonstration:")
-    try:
+    Try:
         # TODO: write the INSERT statement that should fail
-        conn.execute("INSERT INTO Track VALUES (999, 'Ghost Track', 210, 9999)")
-        print("  Insert succeeded — did you enable PRAGMA foreign_keys = ON?")
+        conn.execute("INSERT INTO Track VALUES (29, 'Happy Dancing', 210, 109)")
+
+        print("  Insert succeeded — foreign key can't be enforced.")
+
     except sqlite3.IntegrityError as e:
         # TODO: print a message that identifies which constraint was violated
-        print(f"  IntegrityError caught: {e}")
-        print("  This error confirms that foreign key enforcement is active.")
+        print(" integrity violation detected.")
+        print(f"  IntegrityError: {e}")
+        print("  This confirms foreign key enforcement is active.")
 
     # ── 3c — Persist the RAM database to disk with .backup() ─────────────────
     # TODO: open a connection to "music.db" and call conn.backup(target_conn)
@@ -242,10 +280,16 @@ if __name__ == "__main__":
     #
     # Your code here:
     print("\nPersisting database to music.db ...")
+
     DB_PATH = "music.db"
+
     target_conn = sqlite3.connect(DB_PATH)
+
     conn.backup(target_conn)
+
     target_conn.close()
+
     conn.close()
-    print(f"  Backup complete.  File size: {os.path.getsize(DB_PATH):,} bytes")
+    print(" Its complete. Database is saved to music.db")
+    print(f" complete.  File size: {os.path.getsize(DB_PATH):,} bytes")
     print(f"  Reopen with:  sqlite3.connect('{DB_PATH}')")
