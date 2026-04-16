@@ -181,7 +181,7 @@ def get_most_added_track(conn):
     ORDER BY playlist_count DESC
     LIMIT 1
     """
-    return conn.execute(query).fetchall()
+    return conn.execute(query).fetchone()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
