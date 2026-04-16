@@ -231,8 +231,6 @@ def seed_database(conn):
 # ─────────────────────────────────────────────────────────────────────────────
 # PART 3 — Standalone demonstration  (run:  python schema_data.py)
 # ─────────────────────────────────────────────────────────────────────────────
-Import sqlite3
-Import os
 if __name__ == "__main__":
 
     # 3a — Build and seed a RAM-only database
