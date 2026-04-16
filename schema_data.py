@@ -3,7 +3,7 @@ schema_data.py
 ==============
 CIS 3120 · MP02 — SQL and Database
 Author 1 module — schema creation and seed data
-
+a
 CONTRACT SUMMARY
 ----------------
 Implement build_database(conn) and seed_database(conn) exactly as specified.
@@ -28,7 +28,7 @@ import os
 # ─────────────────────────────────────────────────────────────────────────────
 
 def build_database(conn):
-    conn.execute("PRAGMA foreign_key= ON;")
+    
     """Create the four-table music schema in the database referenced by conn.
 
     Requirements (all graded):
@@ -49,7 +49,7 @@ def build_database(conn):
     None
     """
     # Step 1 — enable foreign key enforcement  (DO NOT REMOVE THIS LINE)
-   conn.execute("PRAGMA foreign_keys = ON;")
+    conn.execute("PRAGMA foreign_keys = ON;")
 
     # Step 2 — Artist table
     conn.execute("""
@@ -231,8 +231,6 @@ def seed_database(conn):
 # ─────────────────────────────────────────────────────────────────────────────
 # PART 3 — Standalone demonstration  (run:  python schema_data.py)
 # ─────────────────────────────────────────────────────────────────────────────
-Import sqlite3
-Import os
 if __name__ == "__main__":
 
     # 3a — Build and seed a RAM-only database
@@ -261,7 +259,7 @@ if __name__ == "__main__":
     #
     # Your code here:
     print("\nIntegrityError demonstration:")
-    Try:
+    try:
         # TODO: write the INSERT statement that should fail
         conn.execute("INSERT INTO Track VALUES (29, 'Happy Dancing', 210, 109)")
 
