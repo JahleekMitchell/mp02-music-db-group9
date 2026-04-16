@@ -3,7 +3,7 @@ schema_data.py
 ==============
 CIS 3120 · MP02 — SQL and Database
 Author 1 module — schema creation and seed data
-
+a
 CONTRACT SUMMARY
 ----------------
 Implement build_database(conn) and seed_database(conn) exactly as specified.
